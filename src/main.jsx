@@ -8,7 +8,8 @@ export class Ball {
     radius = 8,
     color = "white",
     canvasWidth,
-    canvasHeight
+    canvasHeight,
+    orbitSize = 3
   ) {
     this.radius = radius;
     this.color = color;
@@ -21,11 +22,12 @@ export class Ball {
     this.centerX = canvasWidth / 2;
     this.centerY = canvasHeight / 2;
     this.centralSphereRadius = Math.min(canvasWidth, canvasHeight) * 0.08;
-    const maxRadius = Math.min(canvasWidth, canvasHeight) * 0.4;
-    this.baseOrbitRadius = Math.random() * maxRadius * 0.7 + maxRadius * 0.3;
+    const maxRadius = Math.min(canvasWidth, canvasHeight) * 0.45;
+    this.baseOrbitRadius = maxRadius * (0.05 + orbitSize * 0.12);
+    this.baseOrbitRadius *= (0.8 + Math.random() * 0.4);
     this.eccentricity = Math.random() * 0.6;
     this.angle = Math.random() * Math.PI * 2;
-    this.baseAngularSpeed = (Math.random() * 0.015 + 0.005) * (Math.random() > 0.5 ? 1 : -1);
+    this.baseAngularSpeed = (Math.random() * 0.01 + 0.005) * (Math.random() > 0.5 ? 1 : -1);
     this.tiltX = (Math.random() - 0.5) * 1.2; 
     this.tiltY = (Math.random() - 0.5) * 0.8;
     this.tiltZ = (Math.random() - 0.5) * 0.6;
@@ -58,8 +60,18 @@ export class Ball {
       }
     }
 
-    const speedMultiplier = 2.0 - this.distanceFromCenter; 
-    const currentAngularSpeed = this.baseAngularSpeed * speedMultiplier * params.speed;
+    this.centerX = this.canvasWidth / 2;
+    this.centerY = this.canvasHeight / 2;
+    
+    const currentAngularSpeed = this.baseAngularSpeed * params.speed;
+    
+    if (Math.random() < 0.001) {
+      console.log('Speed Debug:', {
+        paramsSpeed: params.speed,
+        baseAngularSpeed: this.baseAngularSpeed,
+        currentAngularSpeed: currentAngularSpeed
+      });
+    }
     
     this.angle += currentAngularSpeed;
     
@@ -69,15 +81,7 @@ export class Ball {
       this.angle += Math.PI * 2;
     }
     
-    this.centerX = this.canvasWidth / 2;
-    this.centerY = this.canvasHeight / 2;
-    
-    const maxRadius = Math.min(this.canvasWidth, this.canvasHeight) * 0.4;
-    this.baseOrbitRadius = maxRadius * (0.2 + params.orbitSize * 0.1);
-    
     this.updatePosition();
-    
-    this.radius = params.ballSize;
   }
   updateCanvasSize(width, height) {
     this.canvasWidth = width;
@@ -96,11 +100,19 @@ export class Ball {
       ctx.stroke();
     }
 
-    ctx.globalAlpha = 0.9;
+    // Draw ball with clear size visibility
+    ctx.globalAlpha = 1.0;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fillStyle = this.color;
     ctx.fill();
+
+    // Add glow effect to make size more visible
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = this.radius * 0.5;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
   }
 
   static drawCentralSphere(ctx, centerX, centerY, radius) {

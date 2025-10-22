@@ -9,9 +9,9 @@ function ParabolicBalls() {
   const ballsRef = useRef([]);
   const params = useControls({
     ballCount: { value: 8, min: 2, max: 30, step: 1 },
-    speed: { value: 2, min: 0.1, max: 10, step: 0.1 },
-    orbitSize: { value: 3, min: 0.5, max: 8, step: 0.2 },
-    ballSize: { value: 5, min: 1, max: 20, step: 1 },
+    speed: { value: 0.5, min: 0, max: 2.5, step: 0.1 },
+    orbitSize: { value: 3, min: 0.3, max: 8, step: 0.2 },
+    ballSize: { value: 5, min: 2, max: 10, step: 1 },
     colorful: true,
   });
 
@@ -22,7 +22,7 @@ function ParabolicBalls() {
         ? `hsl(${(i * 360) / params.ballCount + Math.random() * 60}, 70%, 60%)`
         : "white";
       balls.push(
-        new Ball(params.ballSize, color, canvasWidth, canvasHeight)
+        new Ball(params.ballSize, color, canvasWidth, canvasHeight, params.orbitSize)
       );
     }
     return balls;
@@ -53,7 +53,7 @@ function ParabolicBalls() {
       ? `hsl(${Math.random() * 360}, 70%, 60%)`
       : "white";
     
-    const newBall = new Ball(params.ballSize, color, canvas.width, canvas.height);
+    const newBall = new Ball(params.ballSize, color, canvas.width, canvas.height, params.orbitSize);
     ballsRef.current.push(newBall);
   };
 
@@ -66,9 +66,24 @@ function ParabolicBalls() {
 
   useEffect(() => {
     ballsRef.current.forEach((ball) => {
+      const maxRadius = Math.min(ball.canvasWidth, ball.canvasHeight) * 0.45;
+      const newOrbitRadius = maxRadius * (0.05 + params.orbitSize * 0.12);
+      ball.baseOrbitRadius = newOrbitRadius;
+    });
+  }, [params.orbitSize]);
+
+  useEffect(() => {
+    ballsRef.current.forEach((ball) => {
       ball.radius = params.ballSize;
     });
   }, [params.ballSize]);
+
+  useEffect(() => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+    animate();
+  }, [params.speed]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
