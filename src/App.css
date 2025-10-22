@@ -1,0 +1,67 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+.parabolic-balls-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.parabolic-balls-header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+}
+
+.parabolic-balls-title {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.parabolic-balls-subtitle {
+  color: #cccccc;
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.parabolic-canvas {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 12px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Leva panel styling */
+.leva-c_leva__root__panel {
+  background: rgba(20, 20, 30, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+.leva-c_leva__title {
+  color: #ffffff !important;
+}
+
+.leva-c_leva__folder__title {
+  color: #cccccc !important;
+}
