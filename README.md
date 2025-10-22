@@ -2,6 +2,8 @@
 
 An orbital physics simulation built with React and Canvas, featuring planetary motion with variable speed dynamics.
 
+![OrbitBall Screenshot](image.png)
+
 ## Features
 
 - **Physics** - Variable orbital speed based on distance
