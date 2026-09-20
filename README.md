@@ -37,9 +37,3 @@ const tiltedY = baseY * (1 + this.tiltY) + baseX * this.tiltZ * 0.2;
 - **Orbit Size** - Radius of orbital
 - **Ball Size** - Ball size
 - **Colorful** - For not only white balls
-
-
-## Tech
-- React 18
-- Leva 
-- Vite
